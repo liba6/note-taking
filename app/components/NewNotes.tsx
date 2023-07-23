@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function NewNotes() {
-  const [content, setContent] = useState('');
+export default function NewNotes({ noteContent }) {
+  console.log('props', noteContent);
+  const [content, setContent] = useState(noteContent);
   const router = useRouter();
 
   async function handleSave() {
@@ -38,6 +39,7 @@ export default function NewNotes() {
       <button onClick={handleSave}> Save</button>
       <button>Delete</button>
       <hr />
+
       <Link href="/..">
         <button>Back to Notes List</button>
       </Link>

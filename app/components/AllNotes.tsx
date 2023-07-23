@@ -32,7 +32,7 @@ export function AllNotes(props) {
         <div>No notes available</div>
       ) : (
         data.map((item) => (
-          <Link href={`/edit?id =${item.id}`}>
+          <Link href={`/new?id =${item.id}`}>
             <div key={item.id} onClick={() => handleClick(item.id)}>
               <p>
                 {item.content} {new Date(item.date).toLocaleDateString()}
@@ -41,7 +41,7 @@ export function AllNotes(props) {
           </Link>
         ))
       )}
-      <Link href="/edit  ">
+      <Link href="/new  ">
         <button>Add a Note</button>
       </Link>
     </div>
