@@ -1,20 +1,24 @@
+'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import styles from '../../app/page.module.scss';
 import { getAllNotes } from '../../database/notes';
 
-export function AllEntries() {
+export function AllNotes(props) {
   const [data, setData] = useState([]);
+  const [id, setId] = useState('');
 
   useEffect(() => {
     async function fetchData() {
-      const allData = await getAllNotes();
-      setData(allData);
+      setData(props.allData);
     }
     fetchData();
   }, []);
 
-  console.log('allContent', data);
+  function handleClick(itemId: string) {
+    setId(itemId);
+    console.log('id', itemId);
+  }
   return (
     <div className={styles.div}>
       <h1>Note-Taking. Simplified</h1>
@@ -28,13 +32,16 @@ export function AllEntries() {
         <div>No notes available</div>
       ) : (
         data.map((item) => (
-          <div key={item.id}>
-            <p>{item.content}</p>
-            <p> {new Date(item.date).toLocaleString()}</p>
-          </div>
+          <Link href={`/edit?id =${item.id}`}>
+            <div key={item.id} onClick={() => handleClick(item.id)}>
+              <p>
+                {item.content} {new Date(item.date).toLocaleDateString()}
+              </p>
+            </div>
+          </Link>
         ))
       )}
-      <Link href="/../edits">
+      <Link href="/edit  ">
         <button>Add a Note</button>
       </Link>
     </div>

@@ -5,7 +5,6 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
 
   // insert note in notes postgres table
-
   const notes = createNewNote(body);
 
   // return confirmation

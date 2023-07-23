@@ -16,3 +16,13 @@ export const getAllNotes = cache(async () => {
   notes`;
   return note;
 });
+
+export const getNoteById = cache(async (id: string) => {
+  const note = await sql`
+  SELECT
+  *
+  FROM
+  notes
+  WHERE notes.id = ${id}`;
+  return note;
+});
