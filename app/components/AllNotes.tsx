@@ -2,23 +2,23 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import styles from '../../app/page.module.scss';
-import { getAllNotes } from '../../database/notes';
 
-export function AllNotes(props) {
+export default function Notes() {
   const [data, setData] = useState([]);
-  const [id, setId] = useState('');
+  // const [content, setContent] = useState('');
 
   useEffect(() => {
-    async function fetchData() {
-      setData(props.allData);
+    function fetchData() {
+      const notes = window.localStorage.getItem('notes');
+      const parsedNotes = JSON.parse(notes) || [];
+      setData(parsedNotes);
     }
     fetchData();
   }, []);
 
-  function handleClick(itemId: string) {
-    setId(itemId);
-    console.log('id', itemId);
-  }
+  // function handleClick(content: string) {
+  //   setContent(content);
+  // }
   return (
     <div className={styles.div}>
       <h1>Note-Taking. Simplified</h1>
@@ -28,14 +28,17 @@ export function AllNotes(props) {
         <input />
       </label>
       <h2>Previous Notes:</h2>
-      {data.length < 1 ? (
+      {data.length === 1 ? (
         <div>No notes available</div>
       ) : (
         data.map((item) => (
-          <Link href={`/new?id =${item.id}`}>
-            <div key={item.id} onClick={() => handleClick(item.id)}>
+          <Link href={`/new?note =${item.note}`}>
+            <div
+              key={item.note}
+              // onClick={() => handleClick(item.content)}
+            >
               <p>
-                {item.content} {new Date(item.date).toLocaleDateString()}
+                {item.note} {item.date}
               </p>
             </div>
           </Link>

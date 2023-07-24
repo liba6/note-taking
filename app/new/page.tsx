@@ -6,7 +6,6 @@ export default async function createNotes(params) {
 
   const note = await getNoteById(paramsId);
   let noteContent = note[0]?.content;
-  console.log('noteContent', noteContent);
 
   return <NewNotes noteContent={noteContent} />;
 }

@@ -8,22 +8,28 @@ export default function NewNotes({ noteContent }) {
   const router = useRouter();
 
   async function handleSave() {
-    // send content to api to insert into database
-    const response = await fetch('/api/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(content),
-    });
+    // retrieve any notes from local storage
 
-    const data = await response.json();
+    const existingData = window.localStorage.getItem('notes');
 
-    // push to notes list and refresh
-    if (data) {
-      router.push('/');
-      router.refresh();
-    }
+    let notesArray = existingData ? JSON.parse(existingData) : [];
+
+    const currentDate = new Date().toLocaleDateString();
+
+    // add new note content
+    const newNote = {
+      note: content,
+      date: currentDate,
+    };
+
+    notesArray.push(newNote);
+
+    window.localStorage.setItem('notes', JSON.stringify(notesArray));
+
+    // redirect to notes list and refresh
+
+    router.push('/');
+    router.refresh();
   }
 
   async function handleDelete() {
