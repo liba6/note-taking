@@ -6,7 +6,7 @@ import { useState } from 'react';
 export default function NewNotes({ noteContent }) {
   const [content, setContent] = useState(noteContent);
   const router = useRouter();
-
+  console.log('noteContent', noteContent);
   async function handleSave() {
     // retrieve any notes from local storage
 

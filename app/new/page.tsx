@@ -2,10 +2,7 @@ import { getNoteById } from '../../database/notes';
 import NewNotes from '../components/NewNotes';
 
 export default async function createNotes(params) {
-  const paramsId = params?.searchParams?.['id ']?.trim();
+  const paramsNote = params?.searchParams?.['note ']?.trim();
 
-  const note = await getNoteById(paramsId);
-  let noteContent = note[0]?.content;
-
-  return <NewNotes noteContent={noteContent} />;
+  return <NewNotes noteContent={paramsNote} />;
 }
