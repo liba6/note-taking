@@ -7,43 +7,52 @@ export default function NewNotes({ noteContent }) {
   const [content, setContent] = useState(noteContent);
   const router = useRouter();
   console.log('noteContent', noteContent);
+
   async function handleSave() {
     // retrieve any notes from local storage
 
     const existingData = window.localStorage.getItem('notes');
 
-    let notesArray = existingData ? JSON.parse(existingData) : [];
+    let notesParsed = existingData ? JSON.parse(existingData) : [];
 
+    // date
     const currentDate = new Date().toLocaleDateString();
 
-    // add new note content
-    const newNote = {
-      note: content,
-      date: currentDate,
-    };
+    // check to see if note exists (so won't save same note again)
+    let existingNoteIndex = notesParsed.findIndex(
+      (item) => item.note === noteContent,
+    );
 
-    notesArray.push(newNote);
+    if (existingNoteIndex !== -1) {
+      notesParsed[existingNoteIndex].note = content;
+      notesParsed[existingNoteIndex].date = currentDate;
+    } else {
+      // note doesnt exist, so add new note content
 
-    window.localStorage.setItem('notes', JSON.stringify(notesArray));
+      const newNote = {
+        note: content,
+        date: currentDate,
+      };
+
+      notesParsed.push(newNote);
+    }
+
+    window.localStorage.setItem('notes', JSON.stringify(notesParsed));
 
     // redirect to notes list and refresh
-
     router.push('/');
     router.refresh();
   }
 
-  async function handleDelete() {
-    const response = await fetch('api/delete', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(content),
-    });
+  async function handleDelete(content) {
+    const storage = window.localStorage.getItem('notes');
+    const existingNotes = JSON.parse(storage) || [];
+    const filteredNotes = existingNotes.filter((item) => item.note !== content);
+    window.localStorage.setItem('notes', JSON.stringify(filteredNotes));
 
-    const data = await response.json();
-    if (data) {
-      router.push('/');
-      router.refresh();
-    }
+    // redirect to notes list and refresh
+    router.push('/');
+    router.refresh();
   }
 
   return (
@@ -57,7 +66,7 @@ export default function NewNotes({ noteContent }) {
         ></input>
       </label>
       <button onClick={handleSave}> Save</button>
-      <button onClick={handleDelete}>Delete</button>
+      <button onClick={() => handleDelete(content)}>Delete</button>
       <hr />
 
       <Link href="/..">

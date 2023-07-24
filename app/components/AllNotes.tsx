@@ -28,7 +28,7 @@ export default function Notes() {
         <input />
       </label>
       <h2>Previous Notes:</h2>
-      {data.length === 1 ? (
+      {data.length === 0 ? (
         <div>No notes available</div>
       ) : (
         data.map((item) => (
