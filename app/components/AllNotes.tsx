@@ -3,22 +3,23 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import styles from '../../app/page.module.scss';
 
+export type Note = {
+  note: string;
+  date: string;
+};
 export default function Notes() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Note[]>([]);
   // const [content, setContent] = useState('');
 
   useEffect(() => {
     function fetchData() {
       const notes = window.localStorage.getItem('notes');
-      const parsedNotes = JSON.parse(notes) || [];
+      const parsedNotes = notes ? (JSON.parse(notes) as Note[]) : [];
       setData(parsedNotes);
     }
     fetchData();
   }, []);
 
-  // function handleClick(content: string) {
-  //   setContent(content);
-  // }
   return (
     <div className={styles.div}>
       <h1>Note-Taking. Simplified</h1>
@@ -27,16 +28,15 @@ export default function Notes() {
         Search Notes
         <input />
       </label>
-      <h2>Previous Notes:</h2>
+      <h3>To update, simply click on your note, edit and save.</h3>
+      <h2> Notes:</h2>
+
       {data.length === 0 ? (
         <div>No notes available</div>
       ) : (
         data.map((item) => (
           <Link href={`/new?note =${item.note}`}>
-            <div
-              key={item.note}
-              // onClick={() => handleClick(item.content)}
-            >
+            <div key={item.note}>
               <p>
                 {item.note} {item.date}
               </p>
@@ -44,7 +44,7 @@ export default function Notes() {
           </Link>
         ))
       )}
-      <Link href="/new  ">
+      <Link href="/new">
         <button>Add a Note</button>
       </Link>
     </div>

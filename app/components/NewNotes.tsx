@@ -2,9 +2,15 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { Note } from './AllNotes';
 
-export default function NewNotes({ noteContent }) {
-  const [content, setContent] = useState(noteContent);
+export default function NewNotes({
+  noteContent,
+}: {
+  noteContent: string | undefined;
+}) {
+  const [content, setContent] = useState<string>(noteContent || '');
+
   const router = useRouter();
   console.log('noteContent', noteContent);
 
@@ -20,7 +26,7 @@ export default function NewNotes({ noteContent }) {
 
     // check to see if note exists (so won't save same note again)
     let existingNoteIndex = notesParsed.findIndex(
-      (item) => item.note === noteContent,
+      (item: Note) => item.note === noteContent,
     );
 
     if (existingNoteIndex !== -1) {
@@ -44,9 +50,9 @@ export default function NewNotes({ noteContent }) {
     router.refresh();
   }
 
-  async function handleDelete(content) {
-    const storage = window.localStorage.getItem('notes');
-    const existingNotes = JSON.parse(storage) || [];
+  async function handleDelete(content: string) {
+    const storage = window.localStorage.getItem('notes') as string;
+    const existingNotes: Note[] = JSON.parse(storage) || [];
     const filteredNotes = existingNotes.filter((item) => item.note !== content);
     window.localStorage.setItem('notes', JSON.stringify(filteredNotes));
 
@@ -62,14 +68,14 @@ export default function NewNotes({ noteContent }) {
         New Note
         <input
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(event) => setContent(event.target.value)}
         ></input>
       </label>
       <button onClick={handleSave}> Save</button>
       <button onClick={() => handleDelete(content)}>Delete</button>
       <hr />
 
-      <Link href="/..">
+      <Link href="/">
         <button>Back to Notes List</button>
       </Link>
     </div>
