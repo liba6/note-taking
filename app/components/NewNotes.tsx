@@ -4,14 +4,12 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function NewNotes({ noteContent }) {
-  console.log('props', noteContent);
   const [content, setContent] = useState(noteContent);
   const router = useRouter();
 
   async function handleSave() {
     // send content to api to insert into database
-
-    const response = await fetch('/api/notes', {
+    const response = await fetch('/api/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -20,12 +18,28 @@ export default function NewNotes({ noteContent }) {
     });
 
     const data = await response.json();
-    // alert(data);
+
+    // push to notes list and refresh
     if (data) {
       router.push('/');
       router.refresh();
     }
   }
+
+  async function handleDelete() {
+    const response = await fetch('api/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(content),
+    });
+
+    const data = await response.json();
+    if (data) {
+      router.push('/');
+      router.refresh();
+    }
+  }
+
   return (
     <div>
       <h1>Note Edits Page</h1>
@@ -37,7 +51,7 @@ export default function NewNotes({ noteContent }) {
         ></input>
       </label>
       <button onClick={handleSave}> Save</button>
-      <button>Delete</button>
+      <button onClick={handleDelete}>Delete</button>
       <hr />
 
       <Link href="/..">
