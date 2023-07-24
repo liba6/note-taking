@@ -22,27 +22,37 @@ export default function Notes() {
 
   return (
     <div className={styles.div}>
-      <h1>Note-Taking. Simplified</h1>
+      <h1>Note-Taking Simplified</h1>
       <label>
         {' '}
         Search Notes
         <input />
       </label>
       <h3>To update, simply click on your note, edit and save.</h3>
-      <h2> Notes:</h2>
 
       {data.length === 0 ? (
         <div>No notes available</div>
       ) : (
-        data.map((item) => (
-          <Link href={`/new?note =${item.note}`}>
-            <div key={item.note}>
-              <p>
-                {item.note} {item.date}
-              </p>
-            </div>
-          </Link>
-        ))
+        <div className="container">
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>Note</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item) => (
+                <tr key={item.note}>
+                  <td>
+                    <Link href={`/new?note =${item.note}`}>{item.note}</Link>
+                  </td>
+                  <td>{item.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
       <Link href="/new">
         <button>Add a Note</button>
