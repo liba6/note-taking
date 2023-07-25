@@ -32,20 +32,37 @@ export default function Notes() {
   return (
     <div className={styles.div}>
       <h1 className={styles.h1}>My Notes</h1>
-      <div className="row ">
-        <div className="col col-auto">
+      <h5 className={styles.instruction}>
+        {' '}
+        Cick on note to edit, save or delete.
+      </h5>
+
+      <div className="row justify-content-center m-5 ">
+        <div className="col col-auto ">
           <div className="form-floating">
             <input
-              className="form-control"
+              className="form-control "
               placeholder="Search Notes"
               value={searchString}
               onChange={handleSearchChange}
             />
-            <label className="form-label "> Search Notes</label>
+            <label className="form-label ">
+              {' '}
+              Search Notes
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                style={{ marginLeft: '5px' }}
+              >
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+              </svg>
+            </label>
           </div>
         </div>
       </div>
-      <h5> Cick on note to edit, save or delete.</h5>
 
       {searchString === '' ? (
         // if no search input
@@ -100,12 +117,14 @@ export default function Notes() {
           </table>
         </div>
       )}
-      <Link href="/new">
-        <button className="btn btn-info btn-lg">
-          {/* <button className={styles.btn} */}
-          Add a Note
-        </button>
-      </Link>
+      <div className="d-flex justify-content-center mt-5">
+        <Link href="/new">
+          <button className="btn btn-info btn-lg">Add a Note</button>
+        </Link>
+      </div>
+      <div className={styles.container}>
+        <img src="/sticky.jpeg" alt="clocks image" className={styles.image} />
+      </div>
     </div>
   );
 }

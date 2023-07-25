@@ -40,7 +40,7 @@ export default function NewNotes({
       notesParsed[existingNoteIndex].note !== content
     ) {
       // content is the same, show alert for identical entries
-      alert('There is a note with identical content');
+      alert('This note appears in your note list already');
       return;
     } else if (existingNoteIndex !== -1) {
       if (notesParsed[existingNoteIndex].note !== content) {
@@ -48,14 +48,14 @@ export default function NewNotes({
         notesParsed[existingNoteIndex].date = currentDate;
       } else {
         // content is the same, show alert for identical entries
-        alert('There is a note with identical content');
+        alert('This note appears in your note list already');
         return;
       }
     } else {
       // no params so check if input content already exists in notes
       if (notesParsed.some((item: Note) => item.note === content)) {
         // content already exists, show alert for identical entries
-        alert('There is a note with identical content');
+        alert('This note appears in your note list already');
         return;
       }
 
@@ -98,31 +98,49 @@ export default function NewNotes({
                 onChange={(event) => setContent(event.target.value)}
                 placeholder="New Note"
               />
-              <label className="form-label">Write/Edit YourNote</label>
+              <label className="form-label">
+                Write/Edit Note Here
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  style={{ marginLeft: '5px' }}
+                >
+                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                  <path
+                    fill-rule="evenodd"
+                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+                  />
+                </svg>
+              </label>
             </div>
           </div>
-          <div className="col col-3 mt-5 mb-5 ">
+
+          <div className="d-flex justify-content-center ">
             <button
               onClick={handleSave}
-              className="btn btn-outline-success btn-lg"
+              className="btn btn-outline-success btn-lg mx-2"
             >
               Save
             </button>
-
             <button
-              className="btn btn-outline-danger btn-lg"
               onClick={() => handleDelete(content)}
+              className="btn btn-outline-danger btn-lg mx-2"
             >
               Delete
             </button>
           </div>
         </div>
       </div>
-      <Link href="/">
-        <button type="button" className="btn btn-info btn-lg">
-          My Notes List
-        </button>
-      </Link>
+      <div className="d-flex justify-content-center mt-5">
+        <Link href="/">
+          <button type="button" className="btn btn-info btn-lg">
+            My Notes List
+          </button>
+        </Link>
+      </div>
       <div className={styles.container}>
         <img src="/sticky.jpeg" alt="clocks image" className={styles.image} />
       </div>
