@@ -33,7 +33,7 @@ export default function Notes() {
     <div className={styles.div}>
       <h1 className={styles.h1}>My Notes</h1>
       <div className="row ">
-        <div className="col col-2">
+        <div className="col col-auto">
           <div className="form-floating">
             <input
               className="form-control"
@@ -101,7 +101,10 @@ export default function Notes() {
         </div>
       )}
       <Link href="/new">
-        <button className={styles.btn}>Add a Note</button>
+        <button className="btn btn-info btn-lg">
+          {/* <button className={styles.btn} */}
+          Add a Note
+        </button>
       </Link>
     </div>
   );

@@ -16,34 +16,54 @@ export default function NewNotes({
 
   async function handleSave() {
     // retrieve any notes from local storage
-
     const existingData = window.localStorage.getItem('notes');
 
     let notesParsed = existingData ? JSON.parse(existingData) : [];
+    console.log('notesparsed', notesParsed);
 
     // date
     const currentDate = new Date().toLocaleDateString();
+
     // check if content empty
     if (content === '') {
       alert('Please write a note');
       return;
     }
-    // check to see if note exists (so won't save same note again)
+
+    // check to see if params input note exists in storage already
     let existingNoteIndex = notesParsed.findIndex(
       (item: Note) => item.note === noteContent,
     );
-    // if exists, update
-    if (existingNoteIndex !== -1) {
-      notesParsed[existingNoteIndex].note = content;
-      notesParsed[existingNoteIndex].date = currentDate;
+    if (
+      existingNoteIndex !== -1 &&
+      notesParsed.some((item: Note) => item.note === content) &&
+      notesParsed[existingNoteIndex].note !== content
+    ) {
+      // content is the same, show alert for identical entries
+      alert('There is a note with identical content');
+      return;
+    } else if (existingNoteIndex !== -1) {
+      if (notesParsed[existingNoteIndex].note !== content) {
+        notesParsed[existingNoteIndex].note = content;
+        notesParsed[existingNoteIndex].date = currentDate;
+      } else {
+        // content is the same, show alert for identical entries
+        alert('There is a note with identical content');
+        return;
+      }
     } else {
-      // note doesnt exist, so add new note content
+      // no params so check if input content already exists in notes
+      if (notesParsed.some((item: Note) => item.note === content)) {
+        // content already exists, show alert for identical entries
+        alert('There is a note with identical content');
+        return;
+      }
 
+      // content is new, add new note
       const newNote = {
         note: content,
         date: currentDate,
       };
-
       notesParsed.push(newNote);
     }
 
@@ -69,8 +89,8 @@ export default function NewNotes({
     <div className={styles.div}>
       <h1 className={styles.h1}>Note-Taking Simplified </h1>
       <div className="container">
-        <div className="row gx-4 ">
-          <div className="col col-3 mt-5 mb-5 ">
+        <div className="row gx-5 d-flex justify-content-center">
+          <div className="col col-auto mt-5 mb-5 ">
             <div className="form-floating ">
               <input
                 className="form-control"
@@ -78,16 +98,19 @@ export default function NewNotes({
                 onChange={(event) => setContent(event.target.value)}
                 placeholder="New Note"
               />
-              <label className="form-label">Write A Note</label>
+              <label className="form-label">Write/Edit YourNote</label>
             </div>
           </div>
-          <div className="col col-2 mt-5 mb-5 ">
-            <button onClick={handleSave} className="btn btn-outline-success">
+          <div className="col col-3 mt-5 mb-5 ">
+            <button
+              onClick={handleSave}
+              className="btn btn-outline-success btn-lg"
+            >
               Save
             </button>
 
             <button
-              className="btn btn-outline-danger"
+              className="btn btn-outline-danger btn-lg"
               onClick={() => handleDelete(content)}
             >
               Delete
@@ -96,7 +119,7 @@ export default function NewNotes({
         </div>
       </div>
       <Link href="/">
-        <button type="button" className="btn btn-info">
+        <button type="button" className="btn btn-info btn-lg">
           My Notes List
         </button>
       </Link>
