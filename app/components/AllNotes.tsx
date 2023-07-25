@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import styles from '../../app/page.module.scss';
 
 export type Note = {
@@ -9,7 +9,7 @@ export type Note = {
 };
 export default function Notes() {
   const [data, setData] = useState<Note[]>([]);
-  // const [content, setContent] = useState('');
+  const [searchString, setSearchString] = useState('');
 
   useEffect(() => {
     function fetchData() {
@@ -20,19 +20,62 @@ export default function Notes() {
     fetchData();
   }, []);
 
+  // Function to handle search input change
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchString(e.target.value);
+  };
+
+  // Filter the notes based on search input
+  const filteredNotes = data.filter((item) =>
+    item.note.toLowerCase().includes(searchString.toLowerCase()),
+  );
   return (
     <div className={styles.div}>
-      <h1>Note-Taking Simplified</h1>
-      <label>
-        {' '}
-        Search Notes
-        <input />
-      </label>
-      <h3>To update, simply click on your note, edit and save.</h3>
+      <h1 className={styles.h1}>Note-Taking Simplified</h1>
+      <div className="row ">
+        <div className="col col-auto">
+          <div className="form-floating">
+            <input
+              className="form-control"
+              placeholder="Search Notes"
+              value={searchString}
+              onChange={handleSearchChange}
+            />
+            <label className="form-label "> Search Notes</label>
+          </div>
+        </div>
+      </div>
+      <h5> Cick on note to edit, save or delete.</h5>
 
-      {data.length === 0 ? (
+      {searchString === '' ? (
+        data.length === 0 ? (
+          <div>No notes available</div>
+        ) : (
+          <div className="container">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Note</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((item) => (
+                  <tr key={item.note}>
+                    <td>
+                      <Link href={`/new?note =${item.note}`}>{item.note}</Link>
+                    </td>
+                    <td>{item.date}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
+      ) : filteredNotes.length === 0 ? ( // Show 'No Result Found' message when search input doesn't match any notes
         <div>No notes available</div>
       ) : (
+        // Show filtered notes based on the search input
         <div className="container">
           <table className="table table-striped">
             <thead>
@@ -42,10 +85,10 @@ export default function Notes() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
+              {filteredNotes.map((item) => (
                 <tr key={item.note}>
                   <td>
-                    <Link href={`/new?note =${item.note}`}>{item.note}</Link>
+                    <Link href={`/new?note=${item.note}`}>{item.note}</Link>
                   </td>
                   <td>{item.date}</td>
                 </tr>
@@ -55,7 +98,7 @@ export default function Notes() {
         </div>
       )}
       <Link href="/new">
-        <button>Add a Note</button>
+        <button className={styles.btn}>Add a Note</button>
       </Link>
     </div>
   );
