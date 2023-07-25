@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import styles from '../../app/new/page.module.scss';
 import { Note } from './AllNotes';
 
 export default function NewNotes({
@@ -12,7 +13,6 @@ export default function NewNotes({
   const [content, setContent] = useState<string>(noteContent || '');
 
   const router = useRouter();
-  console.log('noteContent', noteContent);
 
   async function handleSave() {
     // retrieve any notes from local storage
@@ -23,12 +23,16 @@ export default function NewNotes({
 
     // date
     const currentDate = new Date().toLocaleDateString();
-
+    // check if content empty
+    if (content === '') {
+      alert('Please write a note');
+      return;
+    }
     // check to see if note exists (so won't save same note again)
     let existingNoteIndex = notesParsed.findIndex(
       (item: Note) => item.note === noteContent,
     );
-
+    // if exists, update
     if (existingNoteIndex !== -1) {
       notesParsed[existingNoteIndex].note = content;
       notesParsed[existingNoteIndex].date = currentDate;
@@ -62,22 +66,43 @@ export default function NewNotes({
   }
 
   return (
-    <div>
-      <h1>Note Edits Page</h1>
-      <label>
-        New Note
-        <input
-          value={content}
-          onChange={(event) => setContent(event.target.value)}
-        ></input>
-      </label>
-      <button onClick={handleSave}> Save</button>
-      <button onClick={() => handleDelete(content)}>Delete</button>
-      <hr />
+    <div className={styles.div}>
+      <h1 className={styles.h1}>Note-Taking Simplified </h1>
+      <div className="container">
+        <div className="row gx-4 ">
+          <div className="col col-3 mt-5 mb-5 ">
+            <div className="form-floating ">
+              <input
+                className="form-control"
+                value={content}
+                onChange={(event) => setContent(event.target.value)}
+                placeholder="New Note"
+              />
+              <label className="form-label">Write A Note</label>
+            </div>
+          </div>
+          <div className="col col-2 mt-5 mb-5 ">
+            <button onClick={handleSave} className="btn btn-outline-success">
+              Save
+            </button>
 
+            <button
+              className="btn btn-outline-danger"
+              onClick={() => handleDelete(content)}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
       <Link href="/">
-        <button>Back to Notes List</button>
+        <button type="button" className="btn btn-info">
+          My Notes List
+        </button>
       </Link>
+      <div className={styles.container}>
+        <img src="/sticky.jpeg" alt="clocks image" className={styles.image} />
+      </div>
     </div>
   );
 }

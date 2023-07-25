@@ -20,7 +20,7 @@ export default function Notes() {
     fetchData();
   }, []);
 
-  // Function to handle search input change
+  // Function to handle search input
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchString(e.target.value);
   };
@@ -31,9 +31,9 @@ export default function Notes() {
   );
   return (
     <div className={styles.div}>
-      <h1 className={styles.h1}>Note-Taking Simplified</h1>
+      <h1 className={styles.h1}>My Notes</h1>
       <div className="row ">
-        <div className="col col-auto">
+        <div className="col col-2">
           <div className="form-floating">
             <input
               className="form-control"
@@ -48,9 +48,11 @@ export default function Notes() {
       <h5> Cick on note to edit, save or delete.</h5>
 
       {searchString === '' ? (
+        // if no search input
         data.length === 0 ? (
           <div>No notes available</div>
         ) : (
+          // show all notes
           <div className="container">
             <table className="table table-striped">
               <thead>
@@ -72,10 +74,11 @@ export default function Notes() {
             </table>
           </div>
         )
-      ) : filteredNotes.length === 0 ? ( // Show 'No Result Found' message when search input doesn't match any notes
+      ) : filteredNotes.length === 0 ? (
+        // if no matches for search input
         <div>No notes available</div>
       ) : (
-        // Show filtered notes based on the search input
+        // show filtered notes based on the search input
         <div className="container">
           <table className="table table-striped">
             <thead>
