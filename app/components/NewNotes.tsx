@@ -19,7 +19,6 @@ export default function NewNotes({
     const existingData = window.localStorage.getItem('notes');
 
     let notesParsed = existingData ? JSON.parse(existingData) : [];
-    console.log('notesparsed', notesParsed);
 
     // date
     const currentDate = new Date().toLocaleDateString();
@@ -30,19 +29,25 @@ export default function NewNotes({
       return;
     }
 
-    // check to see if params input note exists in storage already
+    // if trying to save params as diff saved note
+
+    // if params input note exists in storage already
     let existingNoteIndex = notesParsed.findIndex(
       (item: Note) => item.note === noteContent,
     );
     if (
       existingNoteIndex !== -1 &&
+      // and new input content exists in storage
       notesParsed.some((item: Note) => item.note === content) &&
+      // new content is not params
       notesParsed[existingNoteIndex].note !== content
     ) {
-      // content is the same, show alert for identical entries
       alert('This note appears in your note list already');
       return;
+
+      // if trying to update or resave params
     } else if (existingNoteIndex !== -1) {
+      // if input differs from params
       if (notesParsed[existingNoteIndex].note !== content) {
         notesParsed[existingNoteIndex].note = content;
         notesParsed[existingNoteIndex].date = currentDate;
@@ -52,7 +57,7 @@ export default function NewNotes({
         return;
       }
     } else {
-      // no params so check if input content already exists in notes
+      // new entry - check if input content already exists in notes
       if (notesParsed.some((item: Note) => item.note === content)) {
         // content already exists, show alert for identical entries
         alert('This note appears in your note list already');
@@ -71,7 +76,6 @@ export default function NewNotes({
 
     // redirect to notes list and refresh
     router.push('/');
-    router.refresh();
   }
 
   async function handleDelete(content: string) {
@@ -82,7 +86,6 @@ export default function NewNotes({
 
     // redirect to notes list and refresh
     router.push('/');
-    router.refresh();
   }
 
   return (
@@ -110,7 +113,7 @@ export default function NewNotes({
                 >
                   <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
                   />
                 </svg>
