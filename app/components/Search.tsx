@@ -5,10 +5,7 @@ type SearchProps = {
   handleSearchChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Search: React.FC<SearchProps> = ({
-  searchString,
-  handleSearchChange,
-}) => {
+const Search = ({ searchString, handleSearchChange }: SearchProps) => {
   return (
     <div className="row justify-content-center m-5 ">
       <div className="col col-auto ">

@@ -1,34 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Note-Taking Simplified.
 
-## Getting Started
+Wanderlust is a mobile-first frontend app that allows users to create, modify, delete and display their notes.
 
-First, run the development server:
+Architecture: </br>
+Frontend: Next.js 13 as the frontend framework to build our web app. </br>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Technologies Used:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Next.js
+- TypeScript / JavaScript
+- React
+- Bootstrap
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Visual Design of App:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Landing page/Notes List:
+<br>
+![landingpage](public/notes.png)
 
-## Learn More
+Create new notes/edit page:
+<br>
+![attractionspage](public/create.png)
 
-To learn more about Next.js, take a look at the following resources:
+Setup Instructions: </br>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- git clone the Github repo to your local machine
+- Install Next.js yarn add create-next-app
+- Setup the database by downloading and installing PostgreSQL
+- Create a user and a database
+- Copy the .env.example file to a new file called .env (this will be ignored from Git)
+- Replace the ##### with username, password and name of your database
+- Install dotenv-cli with yarn add dotenv-cli
+- Run the migrations with yarn migrate up
+- Finally, start the server by running yarn dev
